@@ -1,26 +1,23 @@
-const express = require('express')
-const path=require('path');
-const app = express()
-const port = 3000;
-// const manish=(req,res,next)=>{
-//   console.log(req);         //we can make own middlewere
-//   next();
-// }
-app.use(express.static(path.join(__dirname,"public")))
-// app.use(manish);
+const express=require('express');
+const bodyparser=require('body-parser');
+const app= express();
+app.use(bodyparser.urlencoded({extended:false}));
 
-app.get('/hello/:name', (req, res) => {
-  res.send('Hello World!'+req.params.name);//one or more parameters
-})
-app.get('/about', (req, res) => {
-    // res.send('about')
-    // res.sendFile(path.join(__dirname,'index.html'));
-    // res.status(200);
-    res.json({
-        "manish":34,
-    })
-  })
+
+app.use('/addproduct',(req,res,next)=>{
+   res.send('<form action="/product" method="POST"><input type="number" name="number"><input type="text" name="title"><button type="submit">add product</button></form>');
   
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
 })
+app.use('/product',(req,res,next)=>{
+  
+  console.log(req.body);
+  res.redirect('/');
+})
+app.use('/',(req,res,next)=>{
+  res.send('<h1>hello from express</h1>');
+  
+
+  
+})
+app.listen(3000);
+
